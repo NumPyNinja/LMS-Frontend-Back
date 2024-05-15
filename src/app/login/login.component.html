@@ -1,0 +1,38 @@
+<div class="signin-content">
+  <div class="image-container">
+    <img class="images" src="assets/img/LMS-logo.jpg"/> 
+  </div>
+
+  <mat-card>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <p>Please login to LMS application</p>
+           <mat-error id="errormessage" *ngIf="showErrorMessage">
+            Invalid username and password Please try again
+          </mat-error>
+          <mat-form-field class="full-width-input">
+            <input id="username" matInput placeholder="User" formControlName="userLoginEmailId" required>
+            <mat-error *ngIf="isFieldInvalid('userLoginEmailId')">
+              Please enter your user name
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width-input">
+            <input id="password" matInput type="password" placeholder="Password" formControlName="password" required>
+            <mat-error *ngIf="isFieldInvalid('userLoginEmailId')">
+              Please enter your password
+            </mat-error>
+          </mat-form-field>
+          <!-- <button  id="sign-up" mat-button a routerLink="/sign-up">Sign up</button> -->
+          <button class="login-button" id="login" mat-raised-button color="primary" type="submit">Login</button>
+          <!--<button class="sign-up-button" id="sign-upId" mat-raised-button color="primary" a routerLink="/sign-up">Sign UP</button>-->
+          <br>
+          <br>
+          <a  id="forgot-passwordId" color="primary" routerLink="/forgot-password">Forgot Password</a>
+          
+          <br>
+          <!-- <a  id="reset-password" color="primary" routerLink="/reset-password">Reset Password</a> -->
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

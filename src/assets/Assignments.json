@@ -1,0 +1,47 @@
+[
+	{
+		"assignmentId": 1,
+		"assignmentName": "Sql Assignment",
+		"assignmentDescription": "SQL Practice",
+        "assignmentComments": "Beginner Level",
+		"assignmentDueDate": "5/5/2022",
+        "assignmentPathAttach1": "c:/LMS/SQL/Assignment1",
+        "assignmentPathAttach2": "c:/LMS/SQL/Assignment2",
+        "assignmentPathAttach3": "c:/LMS/SQL/Assignment3",
+        "assignmentPathAttach4": "c:/LMS/SQL/Assignment4",
+        "assignmentPathAttach5": "c:/LMS/SQL/Assignment5",
+        "assignmentCreatedBy": "User",
+        "assignmentBatchId": "1",
+        "assignmentGraderId": "1"
+	},
+	{
+		"assignmentId": 2,
+		"assignmentName": "Selenium Assignment",
+		"assignmentDescription": "Selenium Practice",
+        "assignmentComments": "Beginner Level",
+		"assignmentDueDate": "5/5/2022",
+        "assignmentPathAttach1": "c:/LMS/Selenium/Assignment1",
+        "assignmentPathAttach2": "c:/LMS/Selenium/Assignment2",
+        "assignmentPathAttach3": "c:/LMS/Selenium/Assignment3",
+        "assignmentPathAttach4": "c:/LMS/Selenium/Assignment4",
+        "assignmentPathAttach5": "c:/LMS/Selenium/Assignment5",
+        "assignmentCreatedBy": "User",
+        "assignmentBatchId": "1",
+        "assignmentGraderId": "1"
+	},
+	{
+		"assignmentId": 3,
+		"assignmentName": "Dev Assignment",
+		"assignmentDescription": "Dev Practice",
+        "assignmentComments": "Beginner Level",
+		"assignmentDueDate": "5/5/2022",
+        "assignmentPathAttach1": "c:/LMS/Dev/Assignment1",
+        "assignmentPathAttach2": "c:/LMS/Dev/Assignment2",
+        "assignmentPathAttach3": "c:/LMS/Dev/Assignment3",
+        "assignmentPathAttach4": "c:/LMS/Dev/Assignment4",
+        "assignmentPathAttach5": "c:/LMS/Dev/Assignment5",
+        "assignmentCreatedBy": "User",
+        "assignmentBatchId": "1",
+        "assignmentGraderId": "1"
+	}
+]

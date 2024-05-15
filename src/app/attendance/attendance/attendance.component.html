@@ -1,0 +1,217 @@
+<p-toast></p-toast>
+<div class="signin-content">
+    <mat-card>
+        <mat-card-title>
+            <div class="box">
+                Manage Attendance<br>
+            </div><br>
+            <div class="box">
+                <div></div>
+                <div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" id="filterGlobalId"
+                            (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                    </span>
+                </div>
+                <div>
+                    <!-- <button pButton pRipple id="new" label="Add Attendance" icon="pi pi-plus"
+                        class="p-button-rounded p-button-success" (click)="openNew()"></button> -->
+                </div>
+            </div>
+        </mat-card-title>
+
+        <mat-card-content>           
+                <p-table #dt responsiveLayout="stack" [value]="attendances" [rows]="5" [paginator]="true"
+                    [globalFilterFields]="['studentName', 'batchName','csName']" [(selection)]="selectedAttendances"
+                    [rowHover]="true" dataKey="attId"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [showCurrentPageReport]="true">
+                    <ng-template pTemplate="header" >
+                        <tr>
+                            <th style="width: 10%" pSortableColumn="csName">Class Name
+                                <p-sortIcon field="description"></p-sortIcon> 
+                            </th>
+                            <th style="width: 10%" pSortableColumn="batchName">Batch Name 
+                                <p-sortIcon field="Comments"></p-sortIcon>
+                            </th>
+                            <th style="width:10%">
+                                
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-attendance>
+                        <tr>
+                            <td>{{attendance.csName}}</td>                       
+                            <td>{{attendance.batchName}}</td>
+                            <td><button pButton pRipple id="new" label="View/Edit Attendances"  
+                                class="p-button-rounded p-button-success" (click)="openNewAttendances(); getAttendaceListByClass(attendance);" ></button> 
+                            </td>
+                        </tr>   
+                    </ng-template>
+                </p-table>
+        </mat-card-content>
+    </mat-card>
+</div>
+<p-dialog [(visible)]="allAttendanceDialogue" [style]="{width: '60%'}" header="Attendance List" [modal]="true"
+    styleClass="p-fluid" [closable]="false">
+    <div>
+        <p-confirmDialog  rejectButtonStyleClass="p-button-text" key="myDialog" ></p-confirmDialog>
+        <button pButton pRipple icon="pi pi-trash" class="p-button-danger"(click)="deleteSelectedAttendances()" 
+        [disabled]="!selectedAttendances || !selectedAttendances.length"></button>
+    </div>    
+    <div fxLayout="row" fxLayoutAlign="space-around center" style="height:100%">
+        <mat-spinner [diameter]="50" strokeWidth="5" *ngIf="visibility ">
+        </mat-spinner>
+    </div>
+    <p-table #dt responsiveLayout="stack" [value]="attendances" [rows]="5" [paginator]="true"
+        [globalFilterFields]="['studentName', 'batchName','csName']" [(selection)]="selectedAttendances"
+        [rowHover]="true" dataKey="attId"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true">
+        <ng-template pTemplate="header" 
+        >
+            <tr>
+                <th style="width: 3%">                    
+                    <p-tableCheckbox [value]="attendance"></p-tableCheckbox>
+                </th>
+                <th style="width:15%" pSortableColumn="studentName">Student Name
+                    <p-sortIcon field="Comments"></p-sortIcon>
+                </th>                 
+                <th style="width: 15%">
+                   Attendance Date                  
+                <div class="p-field">
+                        <p-dropdown [options]="AttendaceDateList" id="Attendance" [(ngModel)]="selectedDate" 
+                            placeholder="Select Attendance Date" display="'chip" (onChange)="getDateAndStudentList()">
+                        </p-dropdown>    
+                    </div>
+                </th> 
+                <th style="width:15%">Attendance
+                </th>                                   
+                <th style="width: 15%"> Edit / Delete </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-attendance>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="attendance"></p-tableCheckbox>
+                </td>
+                <td>{{attendance.studentName}}</td>        
+                <td>{{attendance.attendanceDate}}</td>                   
+                <td>{{attendance.attendance}}</td>             
+                <td>
+                    <div class="action">
+                        <span>
+                            <button pButton pRipple icon="pi pi-pencil"
+                                class="p-button-rounded p-button-success"
+                                (click)="editAttendance(attendance)"></button>
+                        </span>
+                        &nbsp; 
+                        <span>
+                            <p-confirmDialog  rejectButtonStyleClass="p- .36button-text" key="deleteDialog" ></p-confirmDialog>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteAttendance(attendance); " ></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                There are {{attendances ? attendances.length : 0 }} Attendances in total.
+            </div>
+            &nbsp; 
+            <div class="p-d-flex p-ai-center">
+                <button pButton pRipple label="Cancel" class="p-button-rounded p-button-danger"
+            (click)="hideDialog()"></button>
+            </div>
+        </ng-template>
+    </p-table>
+</p-dialog>
+
+<p-dialog [(visible)]="attendanceDialogue" [style]="{width: '550px'}" header="Add Attendance" [modal]="true"
+    styleClass="p-fluid" >
+    <ng-template pTemplate="content">
+        <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field">
+                <label for="batch">Batch Name</label>
+                <p-dropdown id="batchId " [options]="batchList" [(ngModel)]="selectedBatch" 
+                    placeholder="Select Batch Name" optionLabel="batchName" display="chip" (onChange)="getUserAndClassList()" ></p-dropdown>
+                    <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !selectedBatch" id="text-danger">Batch Name is required.</small>
+            </div>
+            <div class="p-field">
+                <label for="class">Class Name</label>
+                <p-dropdown id="classNameId " [options]="sessionList" [(ngModel)]="selectedClass" 
+                    placeholder="Select Class Name" optionLabel="classTopic" display="chip"></p-dropdown>
+                    <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !selectedClass" id="text-danger">Class Name is required.</small>
+            </div>
+            <div class="p-field">
+                <label for="studentId">Student Name</label>
+                <p-multiSelect id="studentId" [options]="students" [(ngModel)]="selectedStudents" defaultLabel="Select students" optionLabel="userFirstName" display="chip"></p-multiSelect>
+                    <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !selectedStudents" id="text-danger">Student Name is required.</small>
+            </div>
+            <div class="p-field">
+                <label for="Attendance">Attendance</label>
+                <p-dropdown [options]="attendanceDrop" id="Attendance" [(ngModel)]="selectedDrop" 
+                    placeholder="Select Attendance" display="'chip" >
+                </p-dropdown>    
+                <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !selectedDrop" id="text-danger">Attendance is required.</small>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <label for="attendanceDate">Attendance Date</label>
+                <p-calendar id="attendanceDate" [(ngModel)]="selectedDate" [showIcon]="true" inputId="icon" id="calendarDueDate"
+                    dateFormat="yy-mm-dd" [maxDate]="maxDate" [minDate]="minDate" [style]="{ 'position': 'relative', 'z-index': '80'}"></p-calendar>
+                    <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !selectedDate" id="text-danger">Attendance Date is required.</small>
+            </div>
+            
+            <div></div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" id="saveAttendance" icon="pi pi-check"
+            class="p-button-rounded p-button-success" (click)="saveAttendance()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-dialog [(visible)]="editAttendanceDialogue" [style]="{width: '550px'}" header="Edit Attendance" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field">
+                <label for="batch">Batch Name</label>
+                <input type="text" pInputText id="batchId" [(ngModel)]="attendance.batchName" required autofocus disabled/>                
+            </div>
+            <div class="p-field">
+                <label for="class">Class Name</label>
+                <input type="text" pInputText id="studentId" [(ngModel)]="attendance.csName" required autofocus disabled/>                
+            </div>
+
+            <div class="p-field">
+                <label for="studentId">Student Name</label>
+                <input type="text" pInputText id="classNameId" [(ngModel)]="attendance.studentName" required autofocus disabled />
+            </div>
+
+            <div class="p-field">
+                <label for="Attendance">Attendance</label>
+                <p-dropdown [options]="attendanceDrop" [(ngModel)]="attendance.attendance" id="attendance"
+                    editable="true" [showClear]="true"></p-dropdown>
+                    <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="!attendance.attendance" id="text-danger">Attendance is required.</small>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <label for="attendanceDate">Attendance Date</label>
+                <p-calendar id="attendanceDate" [(ngModel)]="attendance.attendanceDate" [showIcon]="true" inputId="icon" id="calendarDueDate"
+                    dateFormat="yy-mm-dd" [maxDate]="maxDate" [minDate]="minDate" [style]="{ 'position': 'relative', 'z-index': '80'}"></p-calendar>
+                    <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="!attendance.attendanceDate" id="text-danger">Attendance Date is required.</small>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger"
+            (click)="hideEditDialog(); getAttendaceListByClass(attendance);"></button>
+        <button pButton pRipple label="Save" id="saveAttendance" icon="pi pi-check"
+            class="p-button-rounded p-button-success" (click)="saveAttendance(); getAttendaceListByClass(attendance);"></button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

@@ -1,0 +1,59 @@
+<p-toast></p-toast>
+<div  class="grid-container">
+    <div>
+        <mat-card  class="container">
+            <mat-card-title>
+                <div class="box">
+                    Dashboard<br>
+                </div><br>
+            </mat-card-title>
+    <mat-card-content>
+            <mat-grid-list style="padding: 2px; border: 5px;border-color: blue;" class="container" cols="2" rowHeight="200px">
+                <mat-grid-tile style="background-color: rgb(233, 210, 233);" >
+                    <div rowspan="1" colspan="1">
+                            <app-admindata></app-admindata>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile >
+                    <div rowspan="1" colspan="1">
+                        <div> 
+                            <canvas baseChart style="width:320px" 
+                                [datasets]="barChartData"
+                                [labels]="barChartLabels"
+                                [options]="barChartOptions"
+                                [plugins]="barChartPlugins"
+                                [legend]="barChartLegend"
+                                [chartType]="barChartType">
+                            </canvas>
+                         </div>
+                    </div>
+
+
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <div>
+        <app-widgetdata></app-widgetdata>
+    </div>
+
+    <div>
+        <mat-grid-list class="container" cols="2" rowHeight="450px">
+            <mat-grid-tile >
+                <div rowspan="1" colspan="1">
+                    <app-staffdata></app-staffdata>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div rowspan="1" colspan="1">
+                   <app-doughnutchart></app-doughnutchart>
+                </div>
+
+
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>

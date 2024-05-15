@@ -1,0 +1,156 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<p-toast></p-toast>
+
+<div class="grid-container">
+    <div>
+        <mat-card class="container">
+            <mat-card-title>
+                <div class="box">
+                    Dashboard<br>
+                    <button type="button" label="Show" pButton pRipple id="new" label="Upload Assignment"
+                        icon="pi pi-plus" class="p-button-rounded p-button-success" (click)="showDialog()"> </button>
+
+                </div><br>
+            </mat-card-title>
+
+            <mat-card-content>
+                <mat-grid-list style="padding: 2px; border: 5px;border-color: blue;" class="container" cols="2"
+                    rowHeight="200px">
+                    <mat-grid-tile style="background-color: rgb(233, 210, 233);">
+                        <div rowspan="1" colspan="1">
+                            
+                            <div class="value">
+                                <div><img src="assets/5857.jpg" alt="Paris" style="width:150px;border-radius: 50%;">
+                                </div>
+                                <div class="top"> <strong style="font-size: medium;"> Welcome {{userName}}</strong><br>
+                                </div>
+                                <div class="bottom">{{userRole}}</div>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div rowspan="1" colspan="1">
+                            <div>
+                                <app-studentdata></app-studentdata>
+                            </div>
+                        </div>
+
+
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-4">
+                <h1>Upcoming Classes</h1>
+                <table class="table table-striped">
+
+                    <thead><tr>
+
+                        <th>Classes</th>
+                        <th>Dates</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr *ngFor="let item of class">
+                            <td>{{ item.classDescription }}</td>
+                            <td>{{ item.classDate | date:'yyyy-MM-dd' }}</td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            </div>
+
+
+            <div class="col-4">
+                <h1>Missing Assignments</h1>
+                <table class="table table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>Assignment Name</th>
+                            <th>Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of assignment">
+                            <td>{{ item.assignmentName }}</td>
+                            <td>{{ item.dueDate | date:'yyyy-MM-dd' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+
+            <div class="col-4">
+                <h1>Grades</h1>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Classes</th>
+                        <th>Link</th>
+                        <th>Grade</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Upload Assigment" [(visible)]="displayUploadAssignmentDialog" [style]="{width: '55vw'}"
+    [draggable]="false">
+    <div class="card" style="padding: 20px;">
+        <div class="field" style="margin-bottom: 20px;">
+            <label for="Path" style=" margin-bottom: 5px;">Upload Path:</label>
+            <input id="Path" type="path" [(ngModel)]="subPathAttach1" placeholder="Upload Path" size="100"
+                style="width: calc(70% - 12px); padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div class="field" style="margin-bottom: 20px;">
+            <label for="subDesc" style=" margin-bottom: 5px;">Submission Description:</label>
+            <input id="subDesc" type="text" [(ngModel)]="subDesc" placeholder="Submission Description"
+                style="width: calc(70% - 12px); padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div class="field" style="margin-bottom: 20px;">
+            <label for="subComm" style=" margin-bottom: 5px;">Comments:</label>
+            <input id="subComm" type="text" [(ngModel)]="subComments" placeholder="Comments"
+                style="width: calc(70% - 12px); padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div class="field" style="margin-bottom: 20px;">
+            <label for="AssignmentSelect">Select Assignment :</label>
+            <p-dropdown [options]="assignmentSelectList" [virtualScroll]="true" [editable]="true" appendTo="body"
+                [(ngModel)]="selectedUploadAssignment" placeholder="Select Assignment" optionLabel="assignmentName"
+                style="width: calc(70% - 12px);" ></p-dropdown>
+        </div>
+        
+    </div>
+    <ng-template pTemplate="footer">
+        <div style="text-align: right;">
+            <button pButton type="button" (click)="uploadAssignment()" label="Upload" icon="pi pi-check"
+                class="p-button-success" style="margin-right: 10px;"></button>
+            <button pButton type="button" (click)="closePopup()" label="Cancel" icon="pi pi-times"
+                class="p-button-danger" style="margin-left: 10px;"></button>
+        </div>
+    </ng-template>
+</p-dialog>
+

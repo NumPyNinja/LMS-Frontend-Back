@@ -1,0 +1,126 @@
+
+<p-toast></p-toast>
+<div class="signin-content">
+    <mat-card>
+        <mat-card-title>
+            <div class="box">
+                Manage Program<br>
+            </div><br>
+            <div class="box">
+                <div>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger"
+                        (click)="deleteSelectedPrograms()"
+                        [disabled]="!selectedPrograms || !selectedPrograms.length"></button>
+                </div>
+                <div>
+                    <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" id="filterGlobal" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search..." />
+                    </span>
+                </div>
+                <div>
+                <!-- <button pButton pRipple id="new" label="A New Program" icon="pi pi-plus" class="pButton-rounded pButton-success"(click)="openNew()" ></button> -->
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="space-around center" style="height:100%">
+                <mat-spinner [diameter]="50" strokeWidth="5" *ngIf="visibility ">
+                </mat-spinner>
+            </div>
+            <p-table #dt responsiveLayout="stack" [value]="programs" [rows]="5" [paginator]="true"
+                [globalFilterFields]="['programName','programDescription','programStatus']"
+                [(selection)]="selectedPrograms" [rowHover]="true" dataKey="programId"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="programName">Program Name <p-sortIcon field="programName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="programDescription">Program Description <p-sortIcon field="description">
+                            </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="programStatus">Program Status <p-sortIcon field="status"></p-sortIcon>
+                        </th>
+                        <th> Edit / Delete
+                        </th>
+
+
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-program>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="program"></p-tableCheckbox>
+                        </td>
+                        <td>{{program.programName}}</td>
+                        <td>{{program.programDescription}}</td>
+                        <td>{{program.programStatus}}</td>
+                        <td>
+                            <div class="action">
+                                <span>
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-success" id="editProgram"
+                                        (click)="editProgram(program)"></button>
+                                <!-- </span>
+                                <span> -->
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" id="deleteProgram"
+                                        (click)="deleteProgram(program)"></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{programs ? programs.length : 0 }} programs.
+                    </div>
+                </ng-template>
+            </p-table>
+        </mat-card-content>
+    </mat-card>
+</div>
+<p-dialog [(visible)]="programDialogue" [style]="{width: '450px'}" header="Program Details" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="programName">Name<span [style]="{'color':'red!important'}">*</span></label>
+            <input type="text" pattern="^[a-zA-Z][a-zA-Z0-9 ]{1,25}$" pInputText id="programName" [(ngModel)]="program.programName"  required autofocus />
+            <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="submitted && !program.programName">Program name is required.</small>
+            <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="editMode && chkNameExisted(program.programName)">Program name is already exist.</small>
+            <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="patternName()">This field should start with an alphabet, no special char and min 2 char.</small>
+        </div>
+        <div class="p-field">
+            <label for="programDescription">Description<span [style]="{'color':'red!important'}">*</span></label>
+            <input type="text" pattern="^[a-zA-Z][a-zA-Z0-9 -_]{1,25}.*" id="programDescription" pInputText [(ngModel)]="program.programDescription" required
+                rows="3" cols="20" />
+            <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="submitted && !program.programDescription">Description is required.</small>
+            <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="patternDesc()">This field should start with an alphabet and min 2 char.</small>
+        </div>
+
+        <div class="radio">
+            <div>
+                <lable for="online">Status<span [style]="{'color':'red!important'}">*</span></lable>
+            </div>
+            <div *ngFor="let category of status">
+                <p-radioButton [inputId]="category" name="category" [value]="category" id="category"
+                    [(ngModel)]="program.programStatus">
+                </p-radioButton>
+                {{category}}
+            </div>
+        </div>
+        <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="submitted && !program.programStatus">Status is required.</small>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-success" id="saveProgram"
+            (click)="saveProgram()"></button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

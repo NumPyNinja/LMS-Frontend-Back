@@ -1,0 +1,30 @@
+<div class="verification-code-content">
+  <mat-card>
+    <mat-card-content>
+
+      <p>Verification Code</p>
+      <label for="exampleInputEmail1" class="form-label">Enter the Verification Code that was sent to your email</label>
+      <div class="col-md-6">
+
+        <input type="text" (keypress)="numericOnly($event)" type="text" formControlName="phone" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.code.errors }" required minlength="1" maxlength="1" size="1">
+        <input type="text" (keypress)="numericOnly($event)" type="text" formControlName="phone" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.code.errors }" required minlength="1" maxlength="1" size="1">
+        <input type="text" (keypress)="numericOnly($event)" type="text" formControlName="phone" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.code.errors }" required minlength="1" maxlength="1" size="1">
+        <input type="text" (keypress)="numericOnly($event)" type="text" formControlName="phone" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.code.errors }" required minlength="1" maxlength="1" size="1">
+        <input type="text" (keypress)="numericOnly($event)" type="text" formControlName="phone" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.code.errors }" required minlength="1" maxlength="1" size="1">
+
+        <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+          <div *ngIf="f.code.errors.required">code is required</div>
+          <div *ngIf="f.code.errors.minlength">code must be a number.</div>
+        </div>
+      </div>
+
+      <p><a href='/verification-code'>Resend Code</a></p>
+
+      <a href="/reset-password" mat-raised-button color="primary">submit</a>
+    </mat-card-content>
+  </mat-card>

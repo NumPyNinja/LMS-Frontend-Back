@@ -1,0 +1,18 @@
+{
+    "batchId": 11,
+    "batchName": "SDET-75iuyiuyuiyu",
+    "batchDescription": "ckjkjd",
+    "batchStatus": "ACTIVE",
+    "batchNoOfClasses": 10,
+    "programId": {
+        "programId": 13,
+        "programName": "Data Science",
+        "programDescription": "machine learning",
+        "programStatus": "active",
+        "creationTime": null,
+        "lastModTime": null
+    },
+    "programName": "SDET"
+}
+
+"start": "node sever.js ng serve --proxy-config proxy.config.json",

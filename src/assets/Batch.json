@@ -1,0 +1,38 @@
+[
+    {
+        "batchId": 2,
+        "batchName": "b2 Updation",
+        "batchDescription": "SDET b2",
+        "batchStatus": "ACTIVE",
+        "batchNoOfClasses": 6,
+        "programId": 1,
+        "programName": "SDET"
+    },
+    {
+        "batchId": 1,
+        "batchName": "b1",
+        "batchDescription": "SDET b1",
+        "batchStatus": "ACTIVE",
+        "batchNoOfClasses": 1,
+        "programId": 1,
+        "programName": "SDET"
+    },
+    {
+        "batchId": 3,
+        "batchName": "b1",
+        "batchDescription": "DataScience B1",
+        "batchStatus": "ACTIVE",
+        "batchNoOfClasses": 1,
+        "programId": 2,
+        "programName": "Data Dscience"
+    },
+    {
+        "batchId": 4,
+        "batchName": "b2",
+        "batchDescription": "Datascience B2",
+        "batchStatus": "ACTIVE",
+        "batchNoOfClasses": 1,
+        "programId": 2,
+        "programName": "Data Dscience"
+    }
+]

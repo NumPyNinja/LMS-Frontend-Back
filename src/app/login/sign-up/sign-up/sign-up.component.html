@@ -1,0 +1,161 @@
+<p-toast></p-toast>
+<div class="signin-content" >
+    <mat-card class="container">
+        <mat-card-title>
+            <div class="box">
+                <div>
+                    
+                </div>
+                <div>
+                    Registration Form
+                </div>
+                <div>
+                         <span class="label"> I already have an account </span>
+                        <button id="login" mat-raised-button class="login-button" a routerLink="/login">Login</button>
+                </div>
+            </div>
+        </mat-card-title>
+
+        <mat-card-content>
+          <div>
+            <form [formGroup]="signupForm" novalidate (ngSubmit)="onSubmit()">
+                <mat-card class="signup-card">
+                  <mat-card-content>        
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="full-width">
+                          <input matInput placeholder="First name" formControlName="firstName">
+                          <mat-error *ngIf="signupForm.controls['firstName'].hasError('required')">
+                            First name is <strong>required</strong>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+ 
+                      <div class="col">
+                        <mat-form-field class="full-width">
+                          <input matInput placeholder="Last name" formControlName="lastName">
+                          <mat-error *ngIf="signupForm.controls['lastName'].hasError('required')">
+                            Last name is <strong>required</strong>
+                          </mat-error>
+                        </mat-form-field> 
+                      </div>
+                    </div>
+              
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="full-width">
+                          <input matInput placeholder="Address(House Number)" formControlName="address">
+                          <mat-error *ngIf="signupForm.controls['address'].hasError('required')">
+                            Address is <strong>required</strong>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="full-width">
+                          <input matInput placeholder="StreetName" formControlName="streetName">
+                          <mat-error *ngIf="signupForm.controls['streetName'].hasError('required')">
+                            Street Name is <strong>required</strong>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+              
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="full-width">
+                          <input matInput placeholder="City" formControlName="city">
+                          <mat-error *ngIf="signupForm.controls['city'].hasError('required')">
+                            City is <strong>required</strong>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="full-width">
+                          <mat-select placeholder="State" formControlName="state">
+                            <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+                              {{ state.name }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="signupForm.controls['state'].hasError('required')">
+                            State is <strong>required</strong>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                 <div class="row">
+                    <div class="col">
+                      <mat-form-field class="full-width">
+                        <input matInput #zipCode maxlength="5" placeholder="Zip" type="number" formControlName="zipCode">
+                        <mat-hint align="end">{{zipCode.value.length}} / 5</mat-hint>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col">
+                      <mat-form-field class="full-width">
+                        <input matInput #birthDate placeholder="Date of Birth" type="date" formControlName="birthDate"> 
+                          
+                        <mat-error *ngIf="signupForm.controls['birthDate'].hasError('required')">
+                          birthDate is <strong>required</strong>
+                        </mat-error>
+                       
+                        <!-- 
+                         <input matInput #birthDate [matDatepicker]="picker">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        -->
+                      </mat-form-field>
+                    </div>
+                 </div>
+
+                 <div class="row">
+                  <div class="col">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Email address" formControlName="emailAddress">
+                      <mat-error *ngIf="signupForm.controls['emailAddress'].hasError('required')">
+                        Email address is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col">
+                    <mat-form-field class="full-width">
+                      <input matInput #phoneNumber type="number" placeholder="Contact Number" formControlName="phoneNumber">
+                      <mat-hint align="end">{{phoneNumber.value.length}}/10</mat-hint>
+                      <mat-error *ngIf="signupForm.controls['phoneNumber'].hasError('required')">
+                        Phone number is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="User name" formControlName="userName">
+                      <mat-error *ngIf="signupForm.controls['userName'].hasError('required')">
+                        User name is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Password" formControlName="password">
+                      <mat-error *ngIf="signupForm.controls['password'].hasError('required')">
+                        password is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+ 
+                </mat-card-content>
+                    <mat-card-actions style="display: flex; justify-content: center; text-align:center;">
+                       <button mat-raised-button class="signup-button" type="submit"  >Sign up</button>          
+                    </mat-card-actions>
+                </mat-card>
+            </form>
+          </div>
+      </mat-card-content>
+    </mat-card>
+
+</div>

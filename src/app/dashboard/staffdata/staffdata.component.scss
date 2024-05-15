@@ -1,0 +1,24 @@
+.table-container {
+    height: 350px;
+    overflow: auto;
+    width:500px;
+  }
+
+  mat-card {
+    max-width: 80%;
+    margin: 2em auto;
+    text-align: auto;
+    
+  }
+
+  mat-card-title {
+    max-width: 100%;
+    font-size: medium;
+    text-align: left;
+  }
+
+  mat-card-subtitle {
+    max-width: 100%;
+    font-style: bold;
+    text-align: right;
+  }

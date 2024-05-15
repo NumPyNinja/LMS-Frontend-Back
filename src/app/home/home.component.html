@@ -1,0 +1,16 @@
+ <!--<app-program></app-program>-->
+ <!-- <app-dashboard></app-dashboard> -->
+ 
+ <div *ngIf="userRole === 'ROLE_ADMIN'" >
+ <app-dashboard></app-dashboard>
+    </div>
+
+    <div *ngIf="userRole === 'ROLE_STAFF'" >
+        <app-staffdashboard></app-staffdashboard>
+    </div>
+
+    <div *ngIf="userRole === 'ROLE_STUDENT'" >
+       <app-student>    </app-student>
+    </div>
+
+\

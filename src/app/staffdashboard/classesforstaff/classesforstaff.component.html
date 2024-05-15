@@ -1,0 +1,30 @@
+<h3 style="text-align: left;">Classes by You</h3>
+<mat-table class="table-container mat-elevation-z8" [dataSource]="dataSource">
+  <!-- <ng-container matColumnDef="BatchName">
+    <mat-header-cell *matHeaderCellDef>BatchName</mat-header-cell>
+    <mat-cell *matCellDef="let classData">{{classData.userId}}</mat-cell>
+  </ng-container> -->
+  <ng-container matColumnDef="classTopic">
+    <mat-header-cell *matHeaderCellDef>Class Topic</mat-header-cell>
+    <mat-cell class="description-cell" *matCellDef="let classData">{{classData.classTopic}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="batchName">
+    <mat-header-cell *matHeaderCellDef>Batch Name</mat-header-cell>
+    <mat-cell class="duration-cell" *matCellDef="let classData">{{classData.batchName}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="classNo">
+    <mat-header-cell *matHeaderCellDef>Class Number</mat-header-cell>
+    <mat-cell class="duration-cell" *matCellDef="let classData">{{classData.classNo}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="classDate">
+    <mat-header-cell *matHeaderCellDef>Class Date</mat-header-cell>
+    <mat-cell class="duration-cell" *matCellDef="let classData">{{getFormattedDate(classData.classDate)}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns" sticky="true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns" >
+  </mat-row>
+</mat-table>
+
+<mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons [hidePageSize]="true"></mat-paginator>
+
+

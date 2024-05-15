@@ -1,0 +1,487 @@
+<p-toast></p-toast>
+ 
+<div class="signin-content">
+  <mat-card class="container">
+    <mat-card-title>
+      <div class="box">
+        Manage User<br>
+      </div><br>
+    
+    
+      <div class="box">
+        <div>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()"
+            [disabled]="!selectedUsers || !selectedUsers.length"></button>
+        </div>
+
+        <div>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" id="filterGlobal" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search..." />
+          </span>
+        </div>
+        <div>
+          <!-- <button pButton pRipple id="new" label="Add New User" icon="pi pi-plus"
+            class="p-button-rounded p-button-success" (click)="openNew()"></button> -->
+        </div>
+        <div>
+          <!-- <button pButton pRipple id="Assign" label="Assign Student" icon="pi pi-plus"
+            class="p-button-rounded p-button-success" (click)="openAssignDialog()"></button> -->
+        </div>
+       <div>
+          <!-- <button pButton pRipple id="Assign" label="Assign Staff" icon="pi pi-plus"
+            class="p-button-rounded p-button-success" (click)="openAssignStaff()"></button> -->
+        </div>
+      </div>
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutAlign="space-around center" style="height:100%">
+        <mat-spinner [diameter]="50" strokeWidth="5" *ngIf="visibility"></mat-spinner>
+      </div>
+      
+      <p-table #dt responsiveLayout="stack" [value]="users" [rows]="5" [paginator]="true"
+        [globalFilterFields]="['userFirstName', 'userMiddleName', 'lastName']" [(selection)]="selectedUsers"
+        [rowHover]="true" dataKey="userId"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th style="width: 6rem" pSortableColumn="userId">ID <p-sortIcon field="userId"></p-sortIcon>
+            </th>
+            <th style="width: 10rem" pSortableColumn="userFirstName">Name <p-sortIcon field="userFirstName">
+              </p-sortIcon>
+            </th>
+            <th style="width: 15rem" pSortableColumn="userLocation">Location <p-sortIcon field="userLocation">
+              </p-sortIcon>
+            </th>
+            <th style="width: 12rem" pSortableColumn="userPhoneNumber">Phone Number <p-sortIcon field="userPhoneNumber">
+              </p-sortIcon>
+            </th>
+            <th style="width: 10rem"> Edit / Delete</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="user"></p-tableCheckbox>
+            </td>
+            <td (click)="onRowClicked(mytemplateUser,user)">{{user.userId}}</td>
+            <td (click)="onRowClicked(mytemplateUser,user)">{{user.userFirstName}} {{user.userLastName}}</td>
+            <td (click)="onRowClicked(mytemplateUser,user)" style="word-wrap: break-word;">{{user.userLocation}}</td>
+            <td (click)="onRowClicked(mytemplateUser,user)">{{user.userPhoneNumber}}</td>
+            <td>
+              <div class="action">
+                <span>
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success"
+                    (click)="editUser(user)"></button>
+                <!-- </span>&nbsp;&nbsp;&nbsp;
+                <span> -->
+                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                    (click)="deleteUser(user)"></button>
+                </span>
+              </div>
+            </td>
+          </tr>
+          
+        </ng-template>
+        
+        <ng-template pTemplate="summary">
+          <div class="p-d-flex p-ai-center p-jc-between" style="text-align: center;"> In total there are {{users ?
+            users.length : 0 }} users.</div>
+        </ng-template>
+      </p-table>
+      
+    </mat-card-content>
+    
+  </mat-card>
+
+  <p-dialog [(visible)]="userDialogue" [style]="{width: '68%'}" header="User Details" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+      <form [formGroup]="userForm" novalidate (ngSubmit)="onSubmit()">
+        <mat-card class="user-card">
+          <mat-card-content>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-label class="requiredUser">First name </mat-label>
+                  <input pattern="^[a-zA-Z]+$" matInput formControlName="userFirstName">
+                  <mat-error *ngIf="userForm.controls['userFirstName'].hasError('required')">First name is
+                    <strong>required.</strong>
+                  </mat-error>
+                  <mat-error *ngIf="userForm.controls['userFirstName'].hasError('pattern')">Please enter on alphabets only.</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input pattern="^[a-zA-Z]+$" matInput placeholder="Middle name" formControlName="userMiddleName">
+                  <mat-error *ngIf="userForm.get('userMiddleName').value && userForm.controls['userMiddleName'].hasError('pattern')">Please enter on alphabets only.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-label class="requiredUser">Last name </mat-label>
+                  <input pattern="^[a-zA-Z]+$" matInput  formControlName="userLastName">
+                  <mat-error *ngIf="userForm.controls['userLastName'].hasError('required')">Last name is
+                    <strong>required.</strong>
+                  </mat-error>
+                  <mat-error *ngIf="userForm.controls['userLastName'].hasError('pattern')">Please enter on alphabets only.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-label class="requiredUser">Location </mat-label>
+                  <input matInput formControlName="userLocation" pattern="^[a-zA-Z ]+$" >
+                  <mat-error *ngIf="userForm.controls['userLocation'].hasError('required')">Location name is
+                    <strong>required.</strong>
+                  </mat-error>
+                  <mat-error *ngIf="userForm.get('userLocation') && userForm.controls['userLocation'].hasError('pattern')">Please enter on alphabets only.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-label class="requiredUser">Phone no. </mat-label>
+                  <input  matInput formControlName="userPhoneNumber" maxlength="10" size="10" pattern="^[1-9]{1}[0-9]{9}.*">
+                  <mat-error *ngIf="userForm.controls['userPhoneNumber'].hasError('required')">Phone number is
+                    <strong>required.</strong></mat-error>
+                    <mat-error *ngIf="userForm.controls['userPhoneNumber'].hasError('pattern')">Please enter valid Phone number.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="LinkedIn Url"  pattern="^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile).*" formControlName="userLinkedinUrl">
+                  <mat-error *ngIf="userForm.controls['userLinkedinUrl'].hasError('required')">LinkedIn Url is
+                    <strong>required.</strong>
+                  </mat-error>
+                  <mat-error *ngIf="userForm.get('userLinkedinUrl') && userForm.controls['userLinkedinUrl'].hasError('pattern')">Please enter valid LinkedIn Url.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row" style="width:100%">
+              <div class="col">
+              <div class="p-field">
+                <label for="userRole" class="requiredUser">User Role </label>
+                <p-dropdown [options]="userRoleDropdown" formControlName="roleId" name="roleId" id="roleId" 
+                placeholder="Select Role" required></p-dropdown>
+                <span class="spanUser" *ngIf="submitted && userForm.get('roleId').hasError('required')">User Role is <strong>required.</strong></span>
+              </div></div>
+              <div class="col">
+              <div class="p-field">
+                <label for="userRoleStatus" class="requiredUser">User Role Status </label>
+                <p-dropdown [options]="roleStatusDropdown" formControlName="userRoleStatus" name="userRoleStatus" id="userRoleStatus" 
+                placeholder="Select Role Status" required></p-dropdown>
+                <span class="spanUser" *ngIf="submitted && userForm.get('userRoleStatus').hasError('required')">User Role status is <strong>required.</strong></span>
+              </div>
+              </div>
+              </div>
+              <div class="row" style="width:100%">
+              <div class="col">
+              <div class="p-field">
+                <label for="userVisaStatus" class="requiredUser">User Visa Status </label>
+                <p-dropdown [options]="userVisaStatusOptions" formControlName="userVisaStatus" name="userVisaStatus" id="userVisaStatus" 
+                placeholder="Select Visa Status" required></p-dropdown>
+                <span class="spanUser" *ngIf="submitted && userForm.get('userVisaStatus').hasError('required')">User Visa Status is <strong>required.</strong></span>
+              </div>
+              </div>
+              <div class="col">
+                <div class="p-field">
+                  <label for="userVisaStatus" class="requiredUser">Time Zone </label>
+                  <p-dropdown [options]="timeZone" formControlName="userTimeZone" name="userTimeZone" id="userTimeZone" 
+                  placeholder="Select Time Zone" required></p-dropdown>
+                  <span class="spanUser" *ngIf="submitted && userForm.get('userTimeZone').hasError('required')">Time Zone is
+                    <strong>required.</strong>
+                  </span>
+                </div>
+              </div>
+              <!--
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Role Status</mat-label>
+                     <mat-select [formControl]="userForm.get('userRoleMaps').controls[0].get('userRoleStatus')" (change)="userRoleStatusChanged($event.target.value)">
+                        <mat-option *ngFor="let status of roleStatus" [value]="status">{{status}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Visa Status</mat-label>
+                    <mat-select [formControl]="userForm.get('userVisaStatusControl')" (change)="visaStatusChanged($event)">
+                         <mat-option *ngFor="let vstatus of userVisaStatus" [value]="vstatus">{{vstatus}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-form-field>
+              </div>-->
+            </div>
+            <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width" appearance="fill" formGroupName="userLogin">
+                <mat-label class="requiredUser">Email address</mat-label>
+                <input matInput type="email" formControlName="userLoginEmail" [readonly]="editmode">
+                <mat-error *ngIf="userForm.get('userLogin.userLoginEmail').hasError('required')">Email address is <strong>required.</strong></mat-error>
+                <mat-error *ngIf="userForm.get('userLogin.userLoginEmail').hasError('email')">Please enter a valid email address.</mat-error>
+              </mat-form-field>
+            </div></div>
+            <br>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-label class="requiredUser">Under Graduate</mat-label>
+                  <input matInput formControlName="userEduUg">
+                  <mat-error *ngIf="userForm.controls['userEduUg'].hasError('required')">Under Graduate is
+                    <strong>required.</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Post Graduate" formControlName="userEduPg">
+                  <mat-error *ngIf="userForm.controls['userEduPg'].hasError('required')">Post Graduate is
+                    <strong>required.</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+          <!--   <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Time Zone" formControlName="userTimeZone">
+                  <mat-error *ngIf="userForm.controls['userTimeZone'].hasError('required')">Time Zone is
+                    <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>-->
+            </div>
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="User Comments" formControlName="userComments">
+                <mat-error *ngIf="userForm.controls['userComments'].hasError('required')">User Comments is
+                  <strong>required.</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+          <mat-card-actions style="display: flex; justify-content: center; text-align: center;">
+            <button mat-raised-button color="warn" type="button" (click)="hideDialog()">Cancel</button>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+      
+    </ng-template>
+  </p-dialog>
+  
+  <p-dialog [(visible)]="assignStaffDialogue" [style]="{width: '500px'}" header="Assign Staff" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+      <form [formGroup]="assignStaffForm">
+     
+    <!--   Staff -->
+    <span *ngIf="StaffLimit" style="color:red">
+      Exists the Limits 10, so you can't to add the program/batch.
+    </span>
+      <div class="p-field">
+        <label for="userRoleStatus">Staff Role Id</label>
+        <input type="text" readonly pInputText id="roleId" formControlName="roleId" name="roleId" required/>
+      </div>  
+      <div class="p-field">
+        <label for="userRole" class="requiredUser">Staff Email Id</label>
+        <p-dropdown [options]="userEmailUserList" formControlName="userId" name="userId" id="userId" 
+        optionLabel="userFullName" (onChange)="StaffProgramBatch()" placeholder="Select Email Id" required></p-dropdown>
+          <div *ngIf="submittedPB && assignStaffForm.get('userId').hasError('required')" style="color:red">
+             Email Id is required.
+          </div>
+      </div>
+      <div class="p-field">
+        <label for="skillName">Skill</label>
+        <input type="text" readonly pInputText id="skillName" formControlName="skillName" name="skillName"  required/>
+       </div>    
+       <div class="p-field">
+          <label for="programName" class="requiredUser">Program Name</label>
+          <p-dropdown [options]="programList" formControlName="programName" id="programName" required placeholder="Select a Program name " 
+                 optionLabel="programName" (onChange)="updateFilteredBatchNames()"></p-dropdown>
+              <div *ngIf="submittedPB && assignStaffForm.get('programName').hasError('required')" style="color:red">
+                  Program Name is required.
+              </div>
+        </div>
+
+        <div class="p-field">
+          <label for="batchName" class="requiredUser">Batch Name</label>
+          <p-multiSelect id="batchName" [options]="batchList" formControlName="batchName" [(ngModel)]="selectedBatchName"
+        required placeholder="Select Batch Name" appendTo="body" optionLabel="batchName" display="chip"></p-multiSelect>
+              <div *ngIf="submittedPB && assignStaffForm.get('batchName').hasError('required')" style="color:red">
+                Batch Name is required.
+              </div>
+</div>
+      <div class="radio">
+          <div>
+              <label for="online" class="requiredUser">Status : </label>
+          </div>
+          <div *ngFor="let category of roleStatus">
+            <p-radioButton [inputId]="category" name="userStatus" [value]="category" formControlName="userStatus" id="userStatus" required>
+            </p-radioButton>
+              {{category}}
+          </div>
+      </div>
+      <div *ngIf="submittedPB && assignStaffForm.get('userStatus').hasError('required')" style="color: red;">
+        Status is required.
+      </div>
+  </form>
+  
+</ng-template>
+<ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger"
+          (click)="hideDialog()"></button>
+      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-success"
+          (click)="assignStaff()"></button>
+         
+</ng-template>   
+</p-dialog>
+
+<p-dialog [(visible)]="assignProgBatchDialogue" [style]="{width: '500px'}" header="Assign Student" [modal]="true"
+  styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <form [formGroup]="assignProgBatchForm" appendTo="body">
+         <!---student-->
+      <span *ngIf="hiddenPBLimit" style="color:red">
+        Due to existing limitations, the program or batch cannot be modified.
+      </span>
+     <!--   <div *ngIf="hiddenPBActive" style="color:red">
+          Please deactivate User from existing program/batch and then activate for another program/batch.
+        </div>-->
+
+        <div class="p-field">
+          <label for="userRoleStatus">Student Role Id</label>
+        <input type="text" readonly pInputText id="roleId" formControlName="roleId" name="roleId" required/>
+         <div *ngIf="submittedPB && assignProgBatchForm.get('roleId').hasError('required')" style="color:red">
+          User Email Id is required.
+        </div>
+      </div>
+      <div class="p-field">
+        <label for="userRole" class="requiredUser">Student Email Id</label>
+          <p-dropdown [options]="userEmailUserList" [filter]="true" filterBy="userFullName" [showClear]="true" formControlName="userId" name="userId" id="userId" 
+          optionLabel="userFullName" (onChange)="StudentProgramBatch()" placeholder="Select Email ID" required></p-dropdown>
+            <div *ngIf="submittedPB && assignProgBatchForm.get('userId').hasError('required')" style="color:red">
+              User Email Id is required.
+            </div>
+        </div>
+                <div class="p-field">
+          <label for="programName" class="requiredUser">Program Name</label>
+          <input type="text" *ngIf="hiddenPB" readonly="!hiddenPB"pInputText id="programName" formControlName="programName" name="programName"  required/>
+        <p-dropdown  appendTo="body" *ngIf="hiddenPBDB"[options]="programList" formControlName="programName" id="programName" required placeholder="Select a Program name " 
+            optionLabel="programName" (onChange)="updateFilteredBatchNames()"></p-dropdown>
+            <div *ngIf="submittedPB && assignProgBatchForm.get('programName').hasError('required')" style="color:red">
+             Program Name is required.
+            </div>
+       </div>
+ <div class="p-field">
+        <label for="batchName" class="requiredUser">Batch Name</label>
+        <input type="text"*ngIf="hiddenPB" readonly="!hiddenPB" pInputText id="batchName" formControlName="batchName" name="batchName"  required/>
+        <p-dropdown appendTo="body"  *ngIf="hiddenPBDB"[options]="batchList" formControlName="batchName" id="batchName" placeholder="Select Batch"
+            optionLabel="batchName" required></p-dropdown>
+            <div *ngIf="submittedPB && assignProgBatchForm.get('batchName').hasError('required')" style="color:red">
+              Batch Name is required.
+          </div>
+     </div>
+        <div class="radio">
+            <div>
+                <label for="online" class="requiredUser">Status : </label>
+            </div>
+            <div *ngFor="let category of roleStatus">
+              <p-radioButton  [disabled]="!hiddenPBDB" [inputId]="category" name="userStatus" [value]="category" formControlName="userStatus"  id="userStatus" required>
+              </p-radioButton>
+                {{category}}
+            </div>
+        </div>
+        <div *ngIf="submittedPB && assignProgBatchForm.get('userStatus').hasError('required')" style="color: red;">
+          Status is required.
+        </div>
+      </form>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger"
+              (click)="hideDialog()"></button>
+          <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-success"
+              (click)="assignProgramBatch()"></button>
+
+      <button pButton pRipple label="Change Program/Batch" *ngIf="changePB && !hiddenPBDB" class="p-button-rounded p-button-success" 
+            (click)="ChangeProBat()"></button>
+    </ng-template>   
+  </p-dialog>
+  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+</div>
+
+<ng-template #mytemplateUser>
+    <mat-card class="user-card">
+        <mat-card-content>
+            <div class="row">
+                <div class="col">
+<mat-card-title>User Id</mat-card-title>
+                    <mat-card-subtitle>{{selectedUser.userId}}</mat-card-subtitle>
+                </div>
+                <div class="col">
+                    <mat-card-title>User Name</mat-card-title>
+                    <mat-card-subtitle>{{selectedUser.userFirstName}} {{selectedUser.userLastName}}</mat-card-subtitle>
+                </div>
+                
+            </div>    
+            <div class="row">
+                <div class="col">
+                    <mat-card-title>User Location </mat-card-title>
+                    <mat-card-subtitle>{{selectedUser.userLocation}}</mat-card-subtitle>
+                </div>
+                <div class="col">
+                    <mat-card-title>User Phonenumber</mat-card-title>
+                    <mat-card-subtitle>{{selectedUser.userPhoneNumber}}</mat-card-subtitle>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <mat-card-title>User Email</mat-card-title>
+                    <mat-card-subtitle>{{selectedUser1.userLoginEmail}}</mat-card-subtitle>
+                </div>
+                <div class="col">
+                  <mat-card-title>User LinkedIn </mat-card-title>
+                  <mat-card-subtitle>{{selectedUser.userLinkedinUrl}}</mat-card-subtitle>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                  <mat-card-title>User Under Graduate</mat-card-title>
+                  <mat-card-subtitle>{{selectedUser1.userEduUg}}</mat-card-subtitle>
+              </div>
+              <div class="col">
+                <mat-card-title>User Post Graduate</mat-card-title>
+                <mat-card-subtitle>{{selectedUser1.userEduPg}}</mat-card-subtitle>
+            </div>
+          </div>
+            <div class="row">
+                <div class="col">
+                    <mat-card-title>User Visa Status</mat-card-title>
+                    <mat-card-subtitle>{{selectedUser1.userVisaStatus}}</mat-card-subtitle>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-dialog-actions>
+            <button mat-button mat-dialog-close (click)="onCloseDialog()">Close</button>
+        </mat-dialog-actions>
+    </mat-card>
+ 
+</ng-template>

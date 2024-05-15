@@ -1,0 +1,190 @@
+:host ::ng-deep {
+
+  mat-card {
+    max-width: 65%;
+    max-height: 80%;
+    margin: 2em auto;
+    text-align: center;
+  }
+.p-paginator {
+    .p-paginator-current {
+      margin-left: auto;
+    }
+  }
+
+  .p-progressbar {
+    height: 0.5rem;
+    background-color: #d8dadc;
+
+    .p-progressbar-value {
+      background-color: #607d8b;
+    }
+  }
+
+  .p-calendar .p-datepicker {
+    min-width: 25rem;
+
+    td {
+      font-weight: 400;
+    }
+  }
+
+  .p-datatable.p-datatable-customers {
+    .p-datatable-header {
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .p-paginator {
+      padding: 1rem;
+    }
+
+    .p-datatable-thead>tr>th {
+      text-align: center;
+      cursor: auto;
+    }
+
+    .p-datatable-tbody>tr>td {
+      cursor: auto;
+    }
+
+    .p-dropdown-label:not(.p-placeholder) {
+      text-transform: uppercase;
+    }
+  }
+
+  /* Responsive */
+  .p-datatable-customers .p-datatable-tbody>tr>td .p-column-title {
+    display: none;
+  }
+
+
+  .action {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    justify-content: space-between;
+
+    //  color: red;
+  }
+
+}
+
+@media screen and (max-width: 960px) {
+  :host ::ng-deep {
+    .p-datatable {
+      &.p-datatable-customers {
+
+        .p-datatable-thead>tr>th,
+        .p-datatable-tfoot>tr>td {
+          display: none !important;
+        }
+
+        .p-datatable-tbody>tr {
+          border-bottom: 1px solid var(--layer-2);
+
+          >td {
+            text-align: left;
+            display: block;
+            border: 0 none !important;
+            width: 100% !important;
+            float: left;
+            clear: left;
+            border: 0 none;
+
+            .p-column-title {
+              padding: 0.4rem;
+              min-width: 30%;
+              display: inline-block;
+              margin: -0.4rem 1rem -0.4rem -0.4rem;
+              font-weight: bold;
+              // color: red;
+            }
+
+            .p-progressbar {
+              margin-top: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+label {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: right;
+  line-height: 40px;
+  margin-bottom: 4px;
+}
+
+input {
+  height: 35px;
+  flex: 0 0 200px;
+}
+
+.box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: green;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1rem;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+
+}
+
+.radio {
+  margin-top: 15px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.student-details {
+  border: 2px solid #7a98b8; 
+  padding: 20px; 
+  margin-top: 20px; 
+  background-color: #f5f5f5; 
+  border-radius: 5px; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.student-details h1 {
+  color: #007bff; 
+  font-size: 24px; 
+  margin-bottom: 10px; 
+}
+
+.student-details p {
+  font-size: 16px; 
+  margin: 5px 0; 
+}
+
+.student-details strong {
+  display: inline-block;
+  font-weight: bold; 
+  text-align: left;
+  margin-right: 10px;
+}
+.custom-table {
+  border-collapse: collapse;
+}
+
+.custom-table th, .custom-table td {
+  border: 2px solid black;
+  border-width: 3px;
+  text-align: center;
+  padding: 1em;
+}
+.custom-table th{
+  background-color: black;
+  color:white;
+}

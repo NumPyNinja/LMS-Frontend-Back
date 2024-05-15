@@ -1,0 +1,81 @@
+<h3 style="text-align: left;">Staff Data</h3>
+<mat-table class="table-container mat-elevation-z8" [dataSource]="dataSource">
+  <ng-container matColumnDef="userId">
+    <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+    <mat-cell *matCellDef="let staff">{{staff.userId}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="userFirstName">
+    <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+    <mat-cell class="description-cell" *matCellDef="let staff">{{staff.userFirstName}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="userLastName">
+    <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+    <mat-cell class="duration-cell" *matCellDef="let staff">{{staff.userLastName}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="userPhoneNumber">
+    <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
+    <mat-cell class="duration-cell" *matCellDef="let staff">{{staff.userPhoneNumber}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns" sticky="true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(mytemplate,row)">
+  </mat-row>
+</mat-table>
+<!--<mat-paginator [length]="5" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]">
+  </mat-paginator>-->
+<mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons [hidePageSize]="true"></mat-paginator>
+
+
+<ng-template #mytemplate>
+  <mat-card class="user-card">
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-card-title>FirstName</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userFirstName}}</mat-card-subtitle>
+        </div>
+        <div class="col">
+          <mat-card-title>LastName</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userLastName}}</mat-card-subtitle>
+        </div>
+      </div>
+      <div class="col">
+        <mat-card-title>Phone</mat-card-title>
+        <mat-card-subtitle>{{selectedStaff.userPhoneNumber}}</mat-card-subtitle>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-card-title>Location</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userLocation}}</mat-card-subtitle>
+        </div>
+        <div class="col">
+          <mat-card-title>LinkedIn URL</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userLinkedinUrl}}</mat-card-subtitle>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-card-title>Visa Status</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userVisaStatus}}</mat-card-subtitle>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-card-title>Under Graduate</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userEduUg}}</mat-card-subtitle>
+        </div>
+        <div class="col">
+          <mat-card-title>Post Graduate</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userEduPg}}</mat-card-subtitle>
+        </div>
+        <div class="col">
+          <mat-card-title>Time Zone</mat-card-title>
+          <mat-card-subtitle>{{selectedStaff.userTimeZone}}</mat-card-subtitle>
+        </div>
+      </div>
+
+    </mat-card-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close (click)="onCloseDialog()">Close</button>
+    </mat-dialog-actions>
+  </mat-card>
+</ng-template>

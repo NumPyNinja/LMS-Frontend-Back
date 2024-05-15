@@ -1,0 +1,203 @@
+<p-toast></p-toast>
+<div class="signin-content">
+    <mat-card>
+        <mat-card-title>
+            <div class="box">
+                Manage Batch<br>
+            </div><br>
+            <div class="box">
+                <div>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedBatches()"
+                        [disabled]="!selectedBatches || !selectedBatches.length"></button>
+                </div>
+                <div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" id="filterGlobal" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Search..." />
+                    </span>
+                </div>
+                <div>
+                    <!-- <button pButton pRipple id="new" label="A New Batch" icon="pi pi-plus"
+                      class="p-button-rounded p-button-success" (click)="openNew()"></button> -->
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="space-around center" style="height:100%">
+                <mat-spinner [diameter]="50" strokeWidth="5" *ngIf="visibility ">
+                </mat-spinner>
+            </div>
+            <p-table #dt responsiveLayout="stack" [value]="batchList" [rows]="5" [paginator]="true"
+                [globalFilterFields]="['batchName','batchName','batchName']" [(selection)]="selectedBatches"
+                [rowHover]="true" dataKey="batchId"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
+
+                <!--        
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-start">
+                
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template> -->
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="batchName">Batch Name <p-sortIcon field="programName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="batchDescription">Batch Description <p-sortIcon field="batchDescription">
+                            </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="batchStatus">Batch Status <p-sortIcon field="batchStatus">
+                            </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="batchNoOfClasses">No Of Classes <p-sortIcon field="batchNoOfClasses">
+                            </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="programName">Program Name <p-sortIcon field="programName"></p-sortIcon>
+                        </th>
+                        <th> Edit / Delete
+                        </th>
+                        <!-- <th pSortableColumn="programStatus">Delete
+                        </th> -->
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-batch>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="batch"></p-tableCheckbox>
+                        </td>
+                        <td (click)="onRowClicked(batch)">{{batch.batchName}}</td>
+                        <td>{{batch.batchDescription}}</td>
+                        <td>{{batch.batchStatus}}</td>
+                        <td>{{batch.batchNoOfClasses}}</td>
+                        <td>{{batch.programName}}</td>
+                        <!-- <td>{{batch.batchProgramID}}</td> -->
+                        <td>
+                            <div class="action">
+                                <span>
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-success" (click)="editBatch(batch)"></button>
+                                </span>
+                                <span>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                        (click)="deleteBatch(batch)"></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{batchList ? batchList.length : 0 }} batches.
+                    </div>
+                </ng-template>
+            </p-table>
+        </mat-card-content>
+    </mat-card>
+</div>
+<p-dialog [(visible)]="batchDialogue" [style]="{width: '450px'}" header="Batch Details" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="programName">Program Name <label [style]="{'color':'red!important'}">*</label></label>
+            <p-dropdown [options]="activeProgramList" (onChange)="ChangeProgramName()" [(ngModel)]="batch.programName" placeholder="Select a Program name" id="programName"
+                editable="true" [disabled]="onEdit" optionLabel="programName" [showClear]="true"  required></p-dropdown>
+                <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="submitted && !batch.programName">Program Name is required.</small>
+        </div>
+      <!--  <div class="p-field">
+            <label for="batchName">Batch Name<label [style]="{'color':'red!important'}">*</label></label>
+            <input type="text" pattern="^[a-zA-Z][a-zA-Z0-9 ]{1,25}$" pInputText id="batchName" [disabled]="onEdit" [(ngModel)]="batch.batchName" required autofocus />
+            <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="submitted && !batch.batchName">Batch Name is required. </small>
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="patternDesc(batch.batchName,1)" id="text-danger">This field should start with an alphabet, no special char  and min 2 character. </small>
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="batchNameUnique(batch.batchName)">Batch already exists with given Batch Name. </small>
+      </div> -->
+        <div class="p-field">
+            <label for="batchName">Batch Name<label [style]="{'color':'red!important'}">*</label></label>
+            <input type="text" [hidden]="onEdit" pInputText id="batchProg" [style]="{'width':'50%'}" readonly  [(ngModel)]="batch.batchProg" required  />
+            <input type="text" pattern="^[0-9]{0,5}$" [hidden]="onEdit" pInputText id="batchName"[style]="{'width':'50%'}" [disabled]="onEdit" [(ngModel)]="batch.batchName" required/> 
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !batch.batchName" id="text-danger">Batch Name is required.</small> 
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="patternDesc(batch.batchName,1)" id="text-danger">This field accept only numbers and max 5 count. </small>
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="batchNameUnique(batch.batchProg+batch.batchName)">Batch already exists with given Batch Name. </small>
+            <input type="text"  [hidden]="!onEdit" pInputText id="batchName" [disabled]="onEdit" [(ngModel)]="batch.batchName" />  
+        </div>
+        <div class="p-field">
+            <label for="batchDescription">Description <label [style]="{'color':'red!important'}">*</label></label>
+            <input type="text" id="batchDescription" pattern="^[a-zA-Z][a-zA-Z0-9 ]{1}.*" pInputText [(ngModel)]="batch.batchDescription" required rows="3" cols="20" />
+            <small class="p-invalid" [style]="{'color':'red!important'}" *ngIf="submitted && !batch.batchDescription">Batch Description is required.</small>
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="patternDesc(batch.batchDescription,2)" id="text-danger">This field should start with an alphabet and min 2 character.</small>
+        </div>
+
+        <div class="radio">
+            <div>
+                <lable for="online">Status : <lable [style]="{'color':'red!important'}">*</lable></lable>
+            </div>
+            <div *ngFor="let category of status">
+                <p-radioButton [inputId]="category" name="category" [value]="category" [(ngModel)]="batch.batchStatus" id="batchStatus">
+                </p-radioButton>
+                {{category}}
+            </div>
+        </div>
+        <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !batch.batchStatus" id="text-danger">Status is required.</small>
+
+        <div class="p-field">
+            <label for="batchNoOfClasses">Number of Classes <label [style]="{'color':'red!important'}">*</label></label>
+            <input style="width:100%" type="text" id="batchNoOfClasses" type="number" min="1"  max="2147483647" oninput="validity.valid||(value='')" [(ngModel)]="batch.batchNoOfClasses" required rows="3" cols="20" />
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !batch.batchNoOfClasses" id="text-danger">Number of classes is required.</small>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-success"
+            (click)="saveBatch()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="batchAssignUser" [style]="{width: '600px'}" header={{batchNameAssignUser}} [modal]="true"
+    styleClass="p-fluid">
+<p-table #dt responsiveLayout="stack" [value]="batchuserList" [rows]="7" [paginator]="true"
+[globalFilterFields]="['userName']" [(selection)]="selectedBatches"
+[rowHover]="true" dataKey="userId"
+currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+[showCurrentPageReport]="true">
+
+<ng-template pTemplate="header">
+    <tr>
+        <th style="width:3rem">#</th>
+        <th pSortableColumn="userFullName">Name <p-sortIcon field="userFullName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="userLoginEmail">userEmail <p-sortIcon field="userLoginEmail"></p-sortIcon>
+        </th>
+    </tr>
+</ng-template>
+
+<ng-template pTemplate="body" let-batch let-rowIndex="rowIndex+1">
+    <tr>
+        <td>{{rowIndex}}</td>
+        <td>{{batch.userFullName}}</td>
+        <td>{{batch.userLoginEmail}}</td>
+    </tr>
+</ng-template>
+<ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="2">  No Record Found. </td>
+    </tr>
+  </ng-template>
+<ng-template pTemplate="summary">
+    <div class="p-d-flex p-ai-center p-jc-between">
+        In total there are {{batchuserList ? batchuserList.length : 0 }} User.
+    </div>
+</ng-template>
+</p-table>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

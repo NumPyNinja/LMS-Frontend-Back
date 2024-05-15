@@ -1,0 +1,101 @@
+<p-toast></p-toast>
+<div  class="grid-container">
+    <div>
+        <mat-card  class="container">
+            <mat-card-title>
+                <div class="box">
+                    Dashboard<br>
+                </div><br>
+            </mat-card-title>
+    <mat-card-content>
+            <mat-grid-list style="padding: 2px; border: 5px;border-color: blue;" class="container" cols="2" rowHeight="200px">
+                <mat-grid-tile style="background-color: rgb(233, 210, 233);" >
+                    <div rowspan="1" colspan="1">
+                            <app-admindata></app-admindata>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile >
+                    <div rowspan="2" colspan="2">
+                        <div style="width:100%;text-align:left;color: rgb(23, 22, 23); "> 
+                  
+                          <div>
+                              <b>Number of Classes : {{noOfClasses}}</b>
+                          </div>
+                          <div>
+                              <b>User-Id : {{userDbId}}</b>
+                          </div>
+                          <div>
+                              <b>@email : {{userEmailId}}</b>
+                          </div>
+                         </div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <div>
+        <div class="container">
+            <div class="widget-container">
+                <div class="widget green">
+                  <div class="icon">
+                     <i class="pi pi-id-card" style="font-size: 2rem"></i>
+                    <!--<fa-icon [icon]="faLocation"></fa-icon>-->
+                  </div>
+                  <div class="value" routerLink="/attendance" [queryParams]="{userid:userDbId}">
+                    <!--<div class="top"> {{allUserC ? allUserC : 0 }}</div>-->
+                    <div class="bottom">Attendence</div>
+                  </div>
+                </div>
+                <div class="widget yellow">
+                  <div class="icon">
+                    <i class="pi pi-users" style="font-size: 2rem"></i>
+                     <!--<fa-icon [icon]="faLocation"></fa-icon>-->
+                  </div>
+                  <div class="value" routerLink="/assignment">
+                   <!-- <div class="top">{{allStaffC ? allStaffC : 0 }}</div>-->
+                    <div class="bottom">Assignment</div>
+                  </div>
+                </div>
+                <div class="widget red">
+                  <div class="icon">
+                      <!--<fa-icon [icon]="faLocation"></fa-icon>-->
+                      <i class="pi pi-sitemap" style="font-size: 2rem"></i>
+                  </div>
+                  <div class="value" routerLink="/batch">
+                    <!--<div class="top">{{allBatchC ? allBatchC: 0 }}</div>-->
+                    <div class="bottom">Batches</div>
+                  </div>
+                </div>
+                <div class="widget blue">
+                  <div class="icon">
+                    <i class="pi pi-book" style="font-size: 2rem"></i>
+                      <!--<fa-icon [icon]="faLocation"></fa-icon>-->
+                  </div>
+                  <div class="value" routerLink="/program">
+                   <!-- <div class="top">{{allProgramC ? allProgramC : 0}}</div>-->
+                    <div class="bottom">Programs</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+    </div>
+
+    <div>
+        <mat-grid-list class="container" cols="2" rowHeight="450px">
+            <mat-grid-tile >
+                <div rowspan="1" colspan="1">
+                     <app-classesforstaff></app-classesforstaff> 
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              
+
+
+
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<mat-toolbar color="primary" *ngIf="isLoggedIn$ | async as isLoggedIn">
+  <span> LMS - Learning Management System </span>
+  <span class="fill-remaining-space"></span>
+
+  <div *ngIf="userRole == 'ROLE_ADMIN'">
+    <button id="dashboard" mat-button a routerLink="/dashboard">Home</button>
+
+    <button id="program" mat-button [matMenuTriggerFor]="menuProgram" a routerLink="/program">Program</button>
+    <mat-menu #menuProgram="matMenu">
+      <button mat-menu-item (click)="AddProgram()">Add New Program</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="menuBatch" (click)="Batch()">Batch</button>
+    <mat-menu #menuBatch="matMenu">
+      <button mat-menu-item (click)="NewBatch()">Add New Batch</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="menuClass" a routerLink="/session">Class</button>
+    <!-- <button id="session" mat-button a routerLink="/session">Class</button> -->
+    <mat-menu #menuClass="matMenu">
+      <button mat-menu-item (click)="NewSession()">Add New Class</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="menuUser" a routerLink="/user">
+      User
+    </button>
+    <mat-menu #menuUser="matMenu">
+      <button mat-menu-item (click)="NewUser()">Add New User</button>
+      <button mat-menu-item (click)="AssignStaff()">Assign Staff</button>
+      <button mat-menu-item (click)="AssignStudent()">Assign Student</button>
+    </mat-menu>
+    <button id="assignment" [matMenuTriggerFor]="menuAssign" a routerLink="/assignment" mat-button>Assigment</button>
+    <mat-menu #menuAssign="matMenu">
+      <button mat-menu-item (click)="AddAssign()">Add New Assignment</button>
+    </mat-menu>
+    <button id="attendance" [matMenuTriggerFor]="menuAttendance" a routerLink="/attendance"
+      mat-button>Attendance</button>
+    <mat-menu #menuAttendance="matMenu">
+      <button mat-menu-item (click)="AddAttendance()">Add Attendance</button>
+    </mat-menu>
+    <button id="logout" mat-button (click)="onLogout()" *ngIf="isLoggedIn">Logout</button>
+  </div>
+
+  <div *ngIf="userRole == 'ROLE_STAFF'">
+    <button id="dashboard" mat-button a routerLink="/staffdashboard">Staff Dashboard</button>
+    <!-- Class-->
+    <button mat-button [matMenuTriggerFor]="menuClass" a routerLink="/session">Class</button>
+    <mat-menu #menuClass="matMenu">
+      <button mat-menu-item (click)="NewSession()">Add New Class</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="menuUser" a routerLink="/user">
+      User
+    </button>
+    <mat-menu #menuUser="matMenu">
+      <button mat-menu-item (click)="NewUser()">Add New User</button>
+      <button mat-menu-item (click)="AssignStaff()">Assign Staff</button>
+      <button mat-menu-item (click)="AssignStudent()">Assign Student</button>
+    </mat-menu>
+    <button id="assignment" [matMenuTriggerFor]="menuAssign" a routerLink="/assignment" mat-button>Assigment</button>
+    <mat-menu #menuAssign="matMenu">
+      <button mat-menu-item (click)="AddAssign()">Add New Assignment</button>
+    </mat-menu>
+    <button id="attendance" [matMenuTriggerFor]="menuAttendance" a routerLink="/attendance"
+      mat-button>Attendance</button>
+    <mat-menu #menuAttendance="matMenu">
+      <button mat-menu-item (click)="AddAttendance()">Add Attendance</button>
+    </mat-menu>
+    <button id="logout" mat-button (click)="onLogout()" *ngIf="isLoggedIn">Logout</button>
+  </div>
+
+  <div *ngIf="userRole == 'ROLE_STUDENT'">
+    <p-autoComplete [suggestions]="userList" 
+                 (onSelect)="onSelect($event)"
+                 (completeMethod)="search($event)"
+                 (onClear)="userList = null"
+                 field = "userFirstName"
+                 placeholder = "Search..">
+  </p-autoComplete>
+    <button id="student" mat-button a routerLink="/student">Student Dashboard</button>
+    <button id="assignment" [matMenuTriggerFor]="menuAssign" a routerLink="/assignment" mat-button>Assignment</button>
+    <mat-menu #menuAssign="matMenu">
+      <button mat-menu-item (click)="AddAssign()">Add New Assignment</button>
+    </mat-menu>
+    <button id="attendance" [matMenuTriggerFor]="menuAttendance" a routerLink="/attendance"
+      mat-button>Attendance</button>
+    <mat-menu #menuAttendance="matMenu">
+      <button mat-menu-item (click)="AddAttendance()">Add Attendance</button>
+    </mat-menu>
+    <button id="logout" mat-button (click)="onLogout()" *ngIf="isLoggedIn">Logout</button>
+  </div>
+</mat-toolbar>
+
+<div *ngIf="router.url == '/search-user'"> 
+ <p-table  responsiveLayout="stack" [value]="userList" dataKey="userId" >
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="userFirstName">First Name </th>
+            <th pSortableColumn="userLastName">Last Name </th> 
+            <th pSortableColumn="userLoginEmail">Email Id </th>
+            <th pSortableColumn="batchName">Batch Name </th>
+        </tr>
+    </ng-template> 
+    <ng-template pTemplate="body" let-header>
+        <tr>
+            <td> {{header.userFirstName}}</td>
+            <td> {{header.userLastName}}</td>
+            <td> {{header.userLoginEmail}}</td>
+            <td> {{header.batchName}}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns >
+      <tr>
+        <td [attr.colspan]="4">No Record Found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<!-- <div *ngIf="router.url == '/search-user'"><span *ngIf="showText" [style]="{'font-size':'20px'}">User not found!</span></div> -->
+
+

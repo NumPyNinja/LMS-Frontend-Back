@@ -1,0 +1,245 @@
+<p-toast></p-toast>
+<div class="signin-content">
+    <mat-card>
+        <mat-card-title>
+            <div class="box">
+                Manage Class<br>
+            </div><br>
+            <div class="box">
+                <div>
+<p-confirmDialog  rejectButtonStyleClass="p-button-text" key="myDialog" ></p-confirmDialog>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClass()"
+                        [disabled]="!selectedSessions || ! selectedSessions.length"></button>
+                    <!--add click event for deleting all class-->
+                </div>
+                <div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" id="filterGlobal"
+                            (input)="dt.filterGlobal($event.target.value,'contains')" placeholder="Search..." />
+                    </span>
+                </div>
+                <div>
+                    <!-- <button pButton pRipple id="new" label="Add New Class" icon="pi pi-plus"
+                        class="p-button-rounded p-button-success" (click)="openNew()"></button> -->
+                </div>
+            </div>
+        </mat-card-title>
+
+
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="space-around center" style="height:100%">
+                <mat-spinner [diameter]="50" strokeWidth="5" *ngIf="visibility">
+                </mat-spinner>
+            </div>
+            <!-- <p-table #dt responsiveLayout="stack" [value]="sessionList" [rows]="5" [paginator]="true"
+                [globalFilterFields]="['csId','batchId','classNo','classDate',
+                'classTopic','classStaffId','classDescription','classComments', 'classNotes','classRecordingPath']"
+                [(selection)]="selectedSessions" [rowHover]="true" dataKey="csId"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true"> -->
+
+            <p-table #dt responsiveLayout="stack" [value]="sessionList" [rows]="5" [paginator]="true"
+                [globalFilterFields]="['batchName','classTopic','classDescription','classDate','classStaffName']" [(selection)]="selectedSessions" [rowHover]="true"
+                dataKey="csId" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th style="width: 6rem" pSortableColumn="batchName"> Batch Name <p-sortIcon
+                                field="batchName"></p-sortIcon></th>
+
+                        <th style="width: 10rem" pSortableColumn="classTopic">Class Topic <p-sortIcon
+                                field="classTopic">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 14rem" pSortableColumn="classDescription">Class Description <p-sortIcon
+                            field="classDescription"></p-sortIcon>
+                        </th>
+                        <th style="width: 10rem" pSortableColumn="classStatus"> Status <p-sortIcon
+                            field="classStatus"></p-sortIcon></th> 
+                        <th style="width: 10rem" pSortableColumn="classDate"> Class Date <p-sortIcon
+                                field="classDate"></p-sortIcon></th>
+                        <th style="width: 10rem" pSortableColumn="classStaffName"> Staff Name <p-sortIcon
+                                field="classStaffName"></p-sortIcon></th>
+
+                        <th> Edit / Delete</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-session>
+                    <tr>
+                        <td><p-tableCheckbox [value]="session"></p-tableCheckbox></td>
+                        <td (click)="onRowClicked(mytemplateSession,session)">{{findBatchName(session.batchId)}}</td>
+                        <td (click)="onRowClicked(mytemplateSession,session)">{{session.classTopic}}</td>
+                        <td (click)="onRowClicked(mytemplateSession,session)">{{session.classDescription}}</td>
+                        <td (click)="onRowClicked(mytemplateSession,session)">{{session.classStatus}}</td>
+                        <td (click)="onRowClicked(mytemplateSession,session)">{{session.classDate | date:'shortDate'}}
+                        </td>
+                        <td (click)="onRowClicked(mytemplateSession,session)">{{findStaffName(session.classStaffId)}}
+                        </td>
+                        <td>
+                            <div class="action">
+                                <span>
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-success"
+                                        (click)="editSession(session)"></button>
+                        
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                        (click)="deleteSession(session)"></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{sessionList ? sessionList.length : 0 }} classes.
+                    </div>
+                </ng-template>
+            </p-table>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<p-dialog [(visible)]="sessionDialogue" [style]="{width: '450px'}" header="Class Details" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+
+       
+        <div class="p-field">
+            <label for="batchName">Batch Name<label [style]="{'color':'red!important'}">*</label></label>
+            <p-dropdown [options]="batchList" [(ngModel)]="session.batchName" placeholder="Select a Batch Name" id="batchName"
+                editable="true" [disabled]="onEdit" optionLabel="batchName" [showClear]="true"></p-dropdown>
+                <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !session.batchName">Batch Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="classNo">No of Classes <label [style]="{'color':'red!important'}" for="icon">*</label></label>
+            <input style="width:100%" id="classNo" type="number" min="1" max="2147483647" oninput="validity.valid||(value='')" pInputText [(ngModel)]="session.classNo" required autofocus />
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !session.classNo">No. of Classes is required.</small>
+        </div>
+
+        <div class="p-field">
+            <label for="">Class Date <label [style]="{'color':'red!important'}" for="icon">*</label></label>
+            <p-calendar [(ngModel)]="session.classDate" [minDate]="today" appendTo="body" [showIcon]="true" inputId="icon"
+                [style]="{ 'position': 'relative', 'z-index': '10' }"></p-calendar>
+                <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !session.classDate">Class Date is required.</small>
+        </div>
+
+
+        <div class="p-field">
+            <label for="classTopic">Class Topic <label [style]="{'color':'red!important'}" for="icon">*</label></label>
+            <input type="text" id="classTopic" pInputText [(ngModel)]="session.classTopic" required autofocus />
+           <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !session.classTopic">Class Topic is required.</small>
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="classTopic(session.classTopic,session.batchName)">Class Topic is already exists.</small>
+            <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="ClassTopicEdit1(session.classTopic,session.batchName)">Class Topic is already exists.</small>
+        </div>
+        <div class="p-field">
+            <label for="staffId">Staff Name <label [style]="{'color':'red!important'}" for="icon">*</label></label>
+            <p-dropdown [options]="staffIDvaule" [(ngModel)]="session.classStaffName" placeholder="Select a Staff Name"
+                id="userId" editable="true" optionLabel="staffName" [showClear]="true"></p-dropdown>
+                <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !session.classStaffName">Staff Name is required.</small>
+            <!--<input type="text" id="staffId" pInputText [(ngModel)]="session.classStaffId" required autofocus/>-->
+        </div>
+        <div class="p-field">
+            <label for="classDescription">Class Description</label>
+            <input type="text" id="classDescription" pInputText [(ngModel)]="session.classDescription" required
+                autofocus rows="3" cols="20" />
+        </div>
+        <div class="radio">
+            <div>
+                <lable for="online">Status</lable>
+                <span [style]="{'color':'red!important'}" for="icon">*</span>
+            </div>
+            <div *ngFor="let category of status">
+                <p-radioButton [inputId]="category" name="category" [value]="category" id="category"
+                    [(ngModel)]="session.classStatus">
+                </p-radioButton>
+                {{category}}
+            </div>
+        </div>
+        <small [style]="{'color':'red!important'}" class="p-invalid" *ngIf="submitted && !session.classStatus">Status is required.</small>
+        <div class="p-field">
+            <label for="classComments">Comments</label>
+            <input type="text" id="classComments" pInputText [(ngModel)]="session.classComments" required autofocus />
+        </div>
+        <div class="p-field">
+            <label for="classNotes">Notes</label>
+            <input type="text" id="classNotes" pInputText [(ngModel)]="session.classNotes" required autofocus />
+        </div>
+        <div class="p-field">
+            <label for="classRecording">Recording</label>
+            <input type="text" id="classRecordingPath" pInputText [(ngModel)]="session.classRecordingPath" required
+                autofocus />
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-success" id="saveClass"
+            (click)="addSession()"></button>
+    </ng-template>
+</p-dialog>
+
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<ng-template #mytemplateSession>
+    <mat-card class="user-card">
+        <mat-card-content>
+            <div class="row">
+                <div class="col">
+<mat-card-title>Class Topic</mat-card-title>
+                    <mat-card-subtitle>{{selectedSession.classTopic}}</mat-card-subtitle>
+                </div>
+                <div class="col">
+                    <mat-card-title>No of Classes</mat-card-title>
+                    <mat-card-subtitle>{{selectedSession.classNo}}</mat-card-subtitle>
+                </div>
+                <div class="col">
+                    <mat-card-title>Class Date</mat-card-title>
+                    <mat-card-subtitle>{{selectedSession.classDate| date:'shortDate'}}</mat-card-subtitle>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="col">
+                    <mat-card-title>Class Description</mat-card-title>
+                    <mat-card-subtitle>{{selectedSession.classDescription}}</mat-card-subtitle>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-card-title>Status</mat-card-title>
+                        <mat-card-subtitle>{{selectedSession.classStatus}}</mat-card-subtitle>
+                    </div>
+    
+                </div>
+                <div class="col">
+                    <mat-card-title>Class Comments</mat-card-title>
+                    <mat-card-subtitle>{{selectedSession.classComments}}</mat-card-subtitle>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-card-title>Class Notes</mat-card-title>
+                    <mat-card-subtitle>{{selectedSession.classNotes}}</mat-card-subtitle>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-card-title>Class Recording Path</mat-card-title>
+                    <mat-card-subtitle>{{selectedSession.classRecordingPath}}</mat-card-subtitle>
+                </div>
+        
+            </div>
+        </mat-card-content>
+        <mat-dialog-actions>
+            <button mat-button mat-dialog-close (click)="onCloseDialog()">Close</button>
+        </mat-dialog-actions>
+    </mat-card>
+
+</ng-template>
